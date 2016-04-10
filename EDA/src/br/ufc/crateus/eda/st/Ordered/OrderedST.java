@@ -2,8 +2,8 @@ package br.ufc.crateus.eda.st.Ordered;
 
 import br.ufc.crateus.eda.st.ST;
 
-public interface OrderedST<K, V> extends ST<K, V>{
-
+public interface OrderedST<K extends Comparable<K>, V> extends ST<K, V>{
+	
 	K min();
 	K max();
 	K floor(K key);
@@ -13,6 +13,6 @@ public interface OrderedST<K, V> extends ST<K, V>{
 	void deleteMin();
 	void deleteMax();
 	int size(K lo, K hi);
-	Iterable<K> keys(K lo, K hi);		
+	Iterable<K> keys(K lo, K hi);
 
 }
