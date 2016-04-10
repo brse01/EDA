@@ -170,6 +170,7 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 		st.put("Bruno", 22);
 		st.put("Felipe", 17);
 		st.put("Rodrigo", 11);
+		st.put("Zé Cota", 11);
 											
 		int i = 1;
 		for (String key : st.keys()) {						
