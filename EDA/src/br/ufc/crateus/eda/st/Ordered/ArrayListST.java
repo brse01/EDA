@@ -24,20 +24,18 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	}
 
 	@Override
-	// Collections.sort((List<K>) list);
 	public void put(K key, V value) {
 		int x = 1, i;
 		Entry<K, V> e = getEntry(key);
 		if (value != null) {
 			if (e == null) {
 				e = new STEntry<>(key, value);
-				if (list.size() != 0) {
+				if (list.size() > 0) {
 					for (i = 0; i < list.size() || x != 0; i++) {
 						if (key.compareTo(list.get(i).getKey()) >= 0)
 							x = 0;
 					}
-					list.add(i, e);
-					
+					list.add(i, e);										
 				} else {
 					list.add(0, e);
 				}
@@ -175,7 +173,6 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 		st.put("João", 23);
 		st.put("Maria", 40);
 		st.put("Uálison", 25);
-		
 		/*
 		st.put("Bruno", 25);
 		st.put("Ayrton", 21);
