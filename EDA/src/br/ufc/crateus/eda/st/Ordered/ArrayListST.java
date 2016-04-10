@@ -26,11 +26,22 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	@Override
 	// Collections.sort((List<K>) list);
 	public void put(K key, V value) {
+		int x = 1, i;
 		Entry<K, V> e = getEntry(key);
 		if (value != null) {
 			if (e == null) {
 				e = new STEntry<>(key, value);
-				list.add(e);
+				if (list.size() != 0) {
+					for (i = 0; i < list.size() || x != 0; i++) {
+						if (key.compareTo(list.get(i).getKey()) >= 0)
+							x = 0;
+					}
+					list.add(i, e);
+					
+				} else {
+					list.add(0, e);
+				}
+
 			} else
 				e.setValue(value);
 		} else {
@@ -92,19 +103,19 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 
 	@Override
 	public K ceiling(K key) {
-		K aux=null;
+		K aux = null;
 		for (Entry<K, V> e : list) {
-			if (key.compareTo(e.getKey())>=0) {
+			if (key.compareTo(e.getKey()) >= 0) {
 				aux = e.getKey();
-			}	
+			}
 		}
 		return aux;
 	}
 
 	@Override
-	public int rank(K key) {		
-		int lo = 0, hi = list.size();		
-		System.out.println("key escolhida:>"+key);
+	public int rank(K key) {
+		int lo = 0, hi = list.size();
+		System.out.println("key escolhida:>" + key);
 		while (lo <= hi) {
 			int m = lo + (hi - lo) / 2;
 			System.out.println("list:" + list.get(m).getKey());
@@ -164,19 +175,22 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 		st.put("João", 23);
 		st.put("Maria", 40);
 		st.put("Uálison", 25);
+		
+		/*
+		st.put("Bruno", 25);
 		st.put("Ayrton", 21);
 		st.put("Bruno", 25);
 		st.delete("Ayrton");
 		st.put("Bruno", 22);
 		st.put("Felipe", 17);
 		st.put("Rodrigo", 11);
-		st.put("Zé Cota", 11);
-											
+		st.put("Zé Cota", 54);
+		 */
 		int i = 1;
-		for (String key : st.keys()) {						
+		for (String key : st.keys()) {
 			System.out.println((i++) + ". Key = " + key + ", Value = " + st.get(key));
 		}
-	System.out.println(st.max());	
+		System.out.println(st.max());
 	}
 
 }
