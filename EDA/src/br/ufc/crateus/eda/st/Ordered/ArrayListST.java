@@ -23,30 +23,42 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 		return (e != null) ? e.getValue() : null;
 	}
 
+	private void Ordena(Entry<K, V> e) {		
+		List<Entry<K, V>> aux = new ArrayList<>();
+		Entry<K, V> troca;		
+		if (list.size() > 0) {			
+			for (int i = 0; i < list.size(); i++) {				
+				troca = new STEntry<>(list.get(i).getKey(), list.get(i).getValue());
+				if (troca.getKey().compareTo(e.getKey())<=0 || e ==null ) {														
+					aux.add(troca);												
+					
+				} else {					
+					aux.add(e);	
+					e=null;				
+				}								
+			}
+			list=null;
+			list = aux;			
+			aux =null;
+		}else if (list.size() == 0){
+			list.add(e); 	 			
+		}
+	}
+			
 	@Override
 	public void put(K key, V value) {
-		int x = 1, i;
 		Entry<K, V> e = getEntry(key);
 		if (value != null) {
 			if (e == null) {
 				e = new STEntry<>(key, value);
-				if (list.size() > 0) {
-					for (i = 0; i < list.size() || x != 0; i++) {
-						if (key.compareTo(list.get(i).getKey()) >= 0)
-							x = 0;
-					}
-					list.add(i, e);										
-				} else {
-					list.add(0, e);
-				}
-
+				// list.add(e);
+				Ordena(e);
 			} else
 				e.setValue(value);
 		} else {
 			if (e != null)
 				list.remove(e);
 		}
-
 	}
 
 	@Override
@@ -132,8 +144,11 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 
 	@Override
 	public K select(int i) {
-		Entry<K, V> e = list.get(i);
-		return e.getKey();
+		if (i <= list.size()) {
+			Entry<K, V> e = list.get(i);
+			return e.getKey();
+		} else
+			return null;
 	}
 
 	@Override
@@ -168,26 +183,14 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	}
 
 	public static void main(String[] args) {
-
-		OrderedST<String, Integer> st = new ArrayListST<String, Integer>();
-		st.put("João", 23);
-		st.put("Maria", 40);
-		st.put("Uálison", 25);
-		/*
-		st.put("Bruno", 25);
-		st.put("Ayrton", 21);
-		st.put("Bruno", 25);
-		st.delete("Ayrton");
-		st.put("Bruno", 22);
-		st.put("Felipe", 17);
-		st.put("Rodrigo", 11);
-		st.put("Zé Cota", 54);
-		 */
-		int i = 1;
-		for (String key : st.keys()) {
-			System.out.println((i++) + ". Key = " + key + ", Value = " + st.get(key));
+		OrderedST<String, Integer> st2 = new ArrayListST<String, Integer>();		
+		st2.put("E", 1);		
+		st2.put("F", 3);
+		st2.put("C", 3);		
+		for (int i = 0; i < st2.size(); i++) {
+			System.out.println(st2.select(i));
+			
 		}
-		System.out.println(st.max());
+		System.out.println(st2.size());
 	}
-
 }
