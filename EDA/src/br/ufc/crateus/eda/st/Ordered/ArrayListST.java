@@ -1,5 +1,6 @@
 package br.ufc.crateus.eda.st.Ordered;
 
+import java.rmi.server.SocketSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -21,16 +22,21 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	public V get(K key) {
 		Entry<K, V> e = getEntry(key);
 		return (e != null) ? e.getValue() : null;
-	}	
+	}
+
 	@Override
 	public void put(K key, V value) {
 		Entry<K, V> e = getEntry(key);
 		if (value != null) {
 			if (e == null) {
 				e = new STEntry<>(key, value);
-				if(list.size()==0)
-				list.add(e);
-				else list.add(rank(e.getKey()), e);
+
+				if (list.size() == 0) {
+					list.add(e);
+				} else {
+					list.add(rank(e.getKey()), e);
+				}
+
 			} else
 				e.setValue(value);
 		} else {
@@ -90,9 +96,9 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 
 	@Override
 	public K floor(K key) {
-		K aux = null;
+		K aux = null;		 
 		for (Entry<K, V> e : list) {
-			if (key.compareTo(e.getKey()) <= 0)
+			if (e.getKey().compareTo(key) < 0)
 				aux = e.getKey();
 		}
 		return aux;
@@ -101,19 +107,21 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	@Override
 	public K ceiling(K key) {
 		K aux = null;
+		int vz= 0;
 		for (Entry<K, V> e : list) {
-			if (key.compareTo(e.getKey()) >= 0) {
-				aux = e.getKey();
+			if (e.getKey().compareTo(key) > 0) {
+				aux = e.getKey(); vz =1;
 			}
+			if(vz ==1) break;
 		}
 		return aux;
 	}
 
 	@Override
 	public int rank(K key) {
-		int lo = 0, hi = list.size()-1;
+		int lo = 0, hi = list.size() - 1;
 		while (lo <= hi) {
-			int m = (hi - lo) / 2;			
+			int m = (hi - lo) / 2;
 			int cmp = key.compareTo(list.get(m).getKey());
 			if (cmp < 0) {
 				hi = m - 1;
@@ -164,7 +172,7 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	public Iterable<K> keys(K lo, K hi) {
 		List<K> keys = new ArrayList<>();
 		for (Entry<K, V> e : list) {
-			if (lo.compareTo(e.getKey()) >= 0 && hi.compareTo(e.getKey()) <= 0)
+			if (e.getKey().compareTo(lo) > 0 && e.getKey().compareTo(hi) < 0)
 				keys.add(e.getKey());
 		}
 		return keys;
@@ -173,18 +181,17 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	public static void main(String[] args) {
 
 		OrderedST<String, Integer> st2 = new ArrayListST<>();
-		st2.put("E", 1);
-		st2.put("F", 3);
-		st2.put("A", 3);
-		st2.put("B", 3);		
-		for (String per : st2.keys()) {
-			System.out.println("Key = " + per + ", Value = " + st2.get(per));
-		}
-		st2.deleteMin();
-		
-		for (String per : st2.keys()) {
-			System.out.println("Key = " + per + ", Value = " + st2.get(per));
-		}
-	}
-}
+		st2.put("Eraldo", 1);
+		st2.put("Fernando", 3);
+		st2.put("Amanda", 3);
+		st2.put("Bruno", 3);
 
+		for (String per : st2.keys()) {
+			System.out.println("Key = " + per + ", Value = " + st2.get(per));
+		}
+
+		System.out.println("\n" + st2.floor("Eraldo"));
+
+	}
+
+}
