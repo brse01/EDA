@@ -21,38 +21,16 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	public V get(K key) {
 		Entry<K, V> e = getEntry(key);
 		return (e != null) ? e.getValue() : null;
-	}
-
-	private void Ordena(Entry<K, V> e) {		
-		List<Entry<K, V>> aux = new ArrayList<>();
-		Entry<K, V> troca;		
-		if (list.size() > 0) {			
-			for (int i = 0; i < list.size(); i++) {				
-				troca = new STEntry<>(list.get(i).getKey(), list.get(i).getValue());
-				if (troca.getKey().compareTo(e.getKey())<=0 || e ==null ) {														
-					aux.add(troca);												
-					
-				} else {					
-					aux.add(e);	
-					e=null;				
-				}								
-			}
-			list=null;
-			list = aux;			
-			aux =null;
-		}else if (list.size() == 0){
-			list.add(e); 	 			
-		}
-	}
-			
+	}	
 	@Override
 	public void put(K key, V value) {
 		Entry<K, V> e = getEntry(key);
 		if (value != null) {
 			if (e == null) {
 				e = new STEntry<>(key, value);
-				// list.add(e);
-				Ordena(e);
+				if(list.size()==0)
+				list.add(e);
+				else list.add(rank(e.getKey()), e);
 			} else
 				e.setValue(value);
 		} else {
@@ -91,13 +69,22 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 
 	@Override
 	public K min() {
-		Entry<K, V> e = list.get(0);
+		Entry<K, V> e;
+		if (list.size() > 0) {
+			e = list.get(0);
+		} else
+			return null;
+
 		return e.getKey();
 	}
 
 	@Override
 	public K max() {
-		Entry<K, V> e = list.get(list.size() - 1);
+		Entry<K, V> e;
+		if (list.size() > 0) {
+			e = list.get(list.size() - 1);
+		} else
+			return null;
 		return e.getKey();
 	}
 
@@ -124,13 +111,10 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 
 	@Override
 	public int rank(K key) {
-		int lo = 0, hi = list.size();
-		System.out.println("key escolhida:>" + key);
+		int lo = 0, hi = list.size()-1;
 		while (lo <= hi) {
-			int m = lo + (hi - lo) / 2;
-			System.out.println("list:" + list.get(m).getKey());
+			int m = (hi - lo) / 2;			
 			int cmp = key.compareTo(list.get(m).getKey());
-			System.out.println(cmp);
 			if (cmp < 0) {
 				hi = m - 1;
 			} else if (cmp > 0) {
@@ -153,12 +137,16 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 
 	@Override
 	public void deleteMin() {
-		put(min(), null);
+		if (list.size() > 0) {
+			put(min(), null);
+		}
 	}
 
 	@Override
 	public void deleteMax() {
-		put(max(), null);
+		if (list.size() > 0) {
+			put(max(), null);
+		}
 	}
 
 	@Override
@@ -183,14 +171,20 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	}
 
 	public static void main(String[] args) {
-		OrderedST<String, Integer> st2 = new ArrayListST<String, Integer>();		
-		st2.put("E", 1);		
+
+		OrderedST<String, Integer> st2 = new ArrayListST<>();
+		st2.put("E", 1);
 		st2.put("F", 3);
-		st2.put("C", 3);		
-		for (int i = 0; i < st2.size(); i++) {
-			System.out.println(st2.select(i));
-			
+		st2.put("A", 3);
+		st2.put("B", 3);		
+		for (String per : st2.keys()) {
+			System.out.println("Key = " + per + ", Value = " + st2.get(per));
 		}
-		System.out.println(st2.size());
+		st2.deleteMin();
+		
+		for (String per : st2.keys()) {
+			System.out.println("Key = " + per + ", Value = " + st2.get(per));
+		}
 	}
 }
+
