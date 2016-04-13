@@ -1,6 +1,6 @@
 package br.ufc.crateus.eda.st.Ordered;
 
-import java.rmi.server.SocketSecurityException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -30,13 +30,11 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 		if (value != null) {
 			if (e == null) {
 				e = new STEntry<>(key, value);
-
 				if (list.size() == 0) {
 					list.add(e);
 				} else {
 					list.add(rank(e.getKey()), e);
 				}
-
 			} else
 				e.setValue(value);
 		} else {
