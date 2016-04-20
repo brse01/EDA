@@ -9,6 +9,7 @@ import br.ufc.crateus.eda.st.STEntry;
 
 public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> {
 
+	
 	private List<Entry<K, V>> list = new ArrayList<>();
 
 	private Entry<K, V> getEntry(K key) {
@@ -19,14 +20,15 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	}
 
 	@Override
-	public V get(K key) {
+	public V get(K key) {					
 		Entry<K, V> e = getEntry(key);
 		return (e != null) ? e.getValue() : null;
 	}
 
 	@Override
 	public void put(K key, V value) {
-		Entry<K, V> e = getEntry(key);
+								
+		Entry<K, V> e= getEntry(key);
 		if (value != null) {
 			if (e == null) {
 				e = new STEntry<>(key, value);
@@ -72,28 +74,24 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 	}
 
 	@Override
-	public K min() {
-		Entry<K, V> e;
+	public K min() {		
 		if (list.size() > 0) {
-			e = list.get(0);
+			return list.get(0).getKey();
 		} else
-			return null;
-
-		return e.getKey();
+			return null;		
 	}
 
 	@Override
-	public K max() {
-		Entry<K, V> e;
+	public K max() {		
 		if (list.size() > 0) {
-			e = list.get(list.size() - 1);
+			return list.get(list.size() - 1).getKey();
 		} else
-			return null;
-		return e.getKey();
+			return null;		
 	}
 
 	@Override
 	public K floor(K key) {
+						
 		K aux = null;		 
 		for (Entry<K, V> e : list) {
 			if (e.getKey().compareTo(key) < 0)
@@ -166,6 +164,8 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 		return cont;
 	}
 
+
+	
 	@Override
 	public Iterable<K> keys(K lo, K hi) {
 		List<K> keys = new ArrayList<>();
@@ -175,13 +175,13 @@ public class ArrayListST<K extends Comparable<K>, V> implements OrderedST<K, V> 
 		}
 		return keys;
 	}
-
+	
 	public static void main(String[] args) {
 
 		OrderedST<String, Integer> st2 = new ArrayListST<>();
 		st2.put("Eraldo", 1);
 		st2.put("Fernando", 3);
-		st2.put("Amanda", 3);
+		st2.put("Amanda", 3);		
 		st2.put("Bruno", 3);
 
 		for (String per : st2.keys()) {
