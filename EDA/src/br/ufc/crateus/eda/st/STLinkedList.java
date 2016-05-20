@@ -68,14 +68,14 @@ public class STLinkedList<K, V> implements ST<K, V> {
 	
 	public static void main(String[] args) {
 		ST<String, Integer> st = new STLinkedList<String, Integer>();
-		st.put("Jo„o", 23);
+		st.put("Jo√£o", 23);
 		st.put("Maria", 40);
 		
 		for (String key : st.keys()) {
 			System.out.println("1. Key = " + key + ", Value = " + st.get(key));
 		}
 		
-		st.put("U·lison", 25);
+		st.put("U√°lison", 25);
 		st.put("Ayrton", 21);
 		st.put("Bruno", 25);
 		for (String key : st.keys()) {
@@ -89,7 +89,6 @@ public class STLinkedList<K, V> implements ST<K, V> {
 		for (String key : st.keys()) {
 			System.out.println("3. Key = " + key + ", Value = " + st.get(key));
 		}
-		
 
 	}
 }

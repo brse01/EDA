@@ -2,16 +2,16 @@ package br.ufc.crateus.eda.st;
 
 import java.util.Map.Entry;
 
-public class STEntry<K, V> implements Entry<K, V>{
+public class STEntry<K, V> implements Entry<K, V> {
 	
 	private K key;
 	private V value;
-	
-	public STEntry(K key, V value){
-		this.key=key;
-		this.value =value;
+
+	public STEntry(K key, V value) {
+		this.key = key;
+		this.value = value;
 	}
-	
+
 	@Override
 	public K getKey() {
 		return key;
