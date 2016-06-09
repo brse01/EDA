@@ -1,7 +1,22 @@
-package br.ufc.crateus.eda.st.btree;
+public class Page<K extends Comparable<K>,V> {
+	public static final int M = 6;
+	private boolean botton;
+	Node root;
+	List<Node> list = new BinarySearchST<>();
 
-public class Page<K> {
+	public class Node{
+		K key;
+		V value;
+		Page<K,V> next;
 
+			public Node(Node r,K key, V value){
+				root = r;
+				this.key = key;
+				this.value = value;
+				bst.put(key,value);
+			}
+
+	}
 private boolean botton;
 	
 	Page(boolean booton) {
