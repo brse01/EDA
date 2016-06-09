@@ -1,3 +1,5 @@
+package br.ufc.crateus.eda.st.btree;
+
 public class Page<K extends Comparable<K>,V> {
 	public static final int M = 6;
 	private boolean botton;
@@ -17,7 +19,6 @@ public class Page<K extends Comparable<K>,V> {
 			}
 
 	}
-private boolean botton;
 	
 	Page(boolean booton) {
 		this.botton = booton;
