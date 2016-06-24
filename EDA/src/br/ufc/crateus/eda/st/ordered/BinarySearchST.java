@@ -12,13 +12,11 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 
 	@Override
 	public V get(K key) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void put(K key, V value) {
-
 		if (value != null) {
 			int i = rank(key);
 			Entry<K, V> e = list.get(i);
@@ -32,14 +30,12 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 
 	@Override
 	public void delete(K key) {
-		// TODO Auto-generated method stub
-
+		list.remove(rank(key));
 	}
 
 	@Override
 	public boolean contains(K key) {
-		// TODO Auto-generated method stub
-		return false;
+		return list.contains(key);
 	}
 
 	@Override
@@ -49,25 +45,22 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Iterable<K> keys() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public K min() {
-		return null;
+		return list.get(0).getKey();
 	}
 
 	@Override
 	public K max() {
-		// TODO Auto-generated method stub
-		return null;
+		return list.get(list.size() - 1).getKey();
 	}
 
 	@Override
@@ -96,7 +89,6 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 		while (lo <= hi) {
 			int mid = lo + (hi - lo) / 2;
 			int cmp = key.compareTo(select(mid));
-
 			if (cmp < 0)
 				hi = mid - 1;
 			else if (cmp > 0)
@@ -110,31 +102,26 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 
 	@Override
 	public K select(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		return list.get(i).getKey();
 	}
 
 	@Override
 	public void deleteMin() {
-		// TODO Auto-generated method stub
-
+		delete(min());
 	}
 
 	@Override
 	public void deleteMax() {
-		// TODO Auto-generated method stub
-
+		delete(max());
 	}
 
 	@Override
 	public int size(K lo, K hi) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public Iterable<K> keys(K lo, K hi) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

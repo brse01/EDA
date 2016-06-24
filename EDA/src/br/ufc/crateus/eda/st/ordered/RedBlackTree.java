@@ -89,6 +89,57 @@ public class RedBlackTree<K extends Comparable<K>, V> extends BinarySearchTree<K
 
 	@Override
 	public void delete(K key) {
-		super.delete(key);
+
+	}
+
+	protected Node delete(Node h, K key) {
+		if (key.compareTo(h.key) < 0) {
+			if (!isRed(h.left) && !isRed(h.left.left))
+				h = moveRedLeft(h.left);
+			h.left = delete(h.left, key);
+		} else {
+			if (isRed(h.left))
+				h = rotateRight(h);
+			if (key.compareTo(h.key) == 0 && (h.right == null))
+				return null;
+			if (!isRed(h.right) && !isRed(h.right.left))
+				h = moveRedRight(h);
+			if (key.compareTo(h.key) == 0) {
+				Node x = min(h.right);
+				h.key = x.key;
+				h.value = x.value;
+				h.right = deleteMin(h.right);
+			} else
+				h.right = delete(h.right, key);
+		}
+		return balance(h);
+	}
+
+	private Node moveRedRight(Node h) {
+		flipColors(h);
+		if (isRed(h.left.right))
+			h = rotateRight(h);
+		return h;
+	}
+
+	private Node moveRedLeft(Node h) {
+		flipColors(h);
+		if (isRed(h.right.left)) {
+			h.right = rotateRight(h.right);
+			h = rotateLeft(h);
+		}
+		return h;
+	}
+
+	private Node balance(Node h) {
+
+		if (isRed(h.right))
+			h = rotateLeft(h);
+		if (isRed(h.left) && isRed(h.left.left))
+			h = rotateRight(h);
+		if (isRed(h.left) && isRed(h.right))
+			flipColors(h);
+		h.count = size(h.left) + size(h.right) + 1;
+		return h;
 	}
 }

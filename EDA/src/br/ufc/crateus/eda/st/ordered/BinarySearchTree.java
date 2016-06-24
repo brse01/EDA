@@ -65,7 +65,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedST<K
 		root = delete(root, key);
 	}
 
-	private Node delete(Node r, K key) {
+	protected Node delete(Node r, K key) {
 		if (r == null)
 			return null;
 		int cmp = key.compareTo(r.key);
@@ -91,7 +91,8 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedST<K
 
 	@Override
 	public boolean contains(K key) {
-		if(auxDepth(root, key) >0) return true;
+		if (auxDepth(root, key) > 0)
+			return true;
 		return false;
 	}
 
@@ -122,11 +123,11 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedST<K
 		return (min != null) ? min.key : null;
 	}
 
-	private Node min(Node r) {
-		if (r != null)
-			while (r.left != null)
-				r = r.left;
-		return r;
+	protected Node min(Node r) {
+		if (r == null)
+			return null;
+		Node min = min(r.left);
+		return (min != null) ? min : r;
 	}
 
 	@Override
@@ -183,7 +184,6 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedST<K
 		return rank(root, key);
 	}
 
-	
 	private int rank(Node r, K key) {
 		if (r == null)
 			return 0;
@@ -206,7 +206,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedST<K
 		root = deleteMin(root);
 	}
 
-	private Node deleteMin(Node r) {
+	protected Node deleteMin(Node r) {
 		if (r.left == null)
 			return r.right;
 		r.left = deleteMin(r.left);
@@ -288,10 +288,11 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedST<K
 
 	private void auxPrint(Node r) {
 		if (r != null) {
-			aux(depth(r.key),r.value);			
+			aux(depth(r.key), r.value);
 			auxPrint(r.left);
 			auxPrint(r.right);
-		} else System.out.println("_");
+		} else
+			System.out.println("_");
 	}
 
 	@SuppressWarnings("unused")

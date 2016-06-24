@@ -47,6 +47,7 @@ public class ListArray<T> {
 		ar.add(4);
 		ar.add(5);
 		ar.add(6);
+		ar.add(6);
 		
 		for (int i = 0; i < ar.size(); i++)
 			System.out.println(ar.get(i));
