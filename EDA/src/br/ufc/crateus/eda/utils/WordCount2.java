@@ -79,7 +79,7 @@ public class WordCount2 {
 				tt = lista.get(i);
 				reader = w.open(tt);
 				count = w.wordCount(reader, word);
-				System.out.println("No arquivo:>" + tt + "existe:> " + count + "da palavra:>" + word);
+				System.out.println("No arquivo:>" + tt + "existe:> " + count + " da palavra:>" + word);
 				w.close(reader);
 			}						
 		} while (op != 1);
