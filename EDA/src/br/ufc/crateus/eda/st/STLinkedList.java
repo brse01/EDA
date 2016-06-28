@@ -4,26 +4,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-public class STLinkedList<K, V> implements ST<K, V> {
+public class STLinkedList<K, Object> implements ST<K, Object> {
 	
-	private List<Entry<K, V>> list = new LinkedList<>();
+	private List<Entry<K, Object>> list = new LinkedList<>();
 
 	@Override
-	public V get(K key) {
-		Entry<K, V> e = getEntry(key);
+	public Object get(K key) {
+		Entry<K, Object> e = getEntry(key);
 		return (e != null)? e.getValue() : null;
 	}
 	
-	private Entry<K, V> getEntry(K key) {
-		for (Entry<K, V> e : list)
+	private Entry<K, Object> getEntry(K key) {
+		for (Entry<K, Object> e : list)
 			if (e.getKey().equals(key))
 				return e;
 		return null;
 	}
 
 	@Override
-	public void put(K key, V value) {
-		Entry<K, V> e = getEntry(key); 
+	public void put(K key, Object value) {
+		Entry<K, Object> e = getEntry(key); 
 		if (value != null) {
 			if (e == null) {
 				e = new STEntry<>(key, value);
@@ -59,9 +59,8 @@ public class STLinkedList<K, V> implements ST<K, V> {
 	@Override
 	public Iterable<K> keys() {
 		List<K> keys = new LinkedList<>();
-		for (Entry<K, V> e : list) 
-			keys.add(e.getKey());
-		
+		for (Entry<K, Object> e : list) 
+			keys.add(e.getKey());		
 		return keys;
 	}
 	

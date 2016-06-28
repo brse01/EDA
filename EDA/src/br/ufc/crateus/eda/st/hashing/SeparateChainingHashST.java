@@ -87,4 +87,13 @@ public class SeparateChainingHashST<K, V> implements ST<K, V> {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
+	public Iterable<V> values() {
+		List<V> list = new ArrayList<>(count);
+		for (int i = 0; i < m; i++)
+			for (Node l = table[i]; l != null; l = l.next)
+				list.add((V) l.value);
+		return list;
+	}
+
 }
