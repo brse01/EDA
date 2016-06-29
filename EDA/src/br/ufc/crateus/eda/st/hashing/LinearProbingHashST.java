@@ -35,10 +35,8 @@ public class LinearProbingHashST<K, V> implements ST<K, V> {
 	public void put(K key, V value) {
 		if ((double) length / m > 0.5)
 			resize();
-
 		int i;
-		for (i = hash(key); keys[i] != null && !key.equals(keys[i]); i = (i + 1) % m)
-			;
+		for (i = hash(key); keys[i] != null && !key.equals(keys[i]); i = (i + 1) % m);
 		if (keys[i] == null) {
 			keys[i] = key;
 			length++;

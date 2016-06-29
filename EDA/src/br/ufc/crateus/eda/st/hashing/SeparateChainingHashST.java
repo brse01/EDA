@@ -96,4 +96,14 @@ public class SeparateChainingHashST<K, V> implements ST<K, V> {
 		return list;
 	}
 
+	@SuppressWarnings({ "unused", "unchecked" })
+	private void resize() {
+		SeparateChainingHashST<K, V> hash = new SeparateChainingHashST<>(2 * m);
+		for (int i = 0; i < m; i++)
+			for (Node l = table[i]; l != null; l = l.next) {
+				hash.put((K) l.key, (V) l.value);
+			}
+		hash.table = table;
+	}
+
 }

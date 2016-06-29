@@ -10,26 +10,13 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 
 	private List<Entry<K, V>> list = new ArrayList<>();
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public V get(K key) {
-		return (V) list.get(rank(key));
+		return (V) list.get(rank(key)).getValue();
 	}
 
-	@Override
 	public void put(K key, V value) {
-		if (value != null) {
-			int i = rank(key);
-			Entry<K, V> e = list.get(i);
-			if (e.getKey().equals(key)) {
-				e.setValue(value);
-			} else
-				list.add(i, new STEntry<K, V>(key, value));
-		} else
-			delete(key);
-	}
-
-	public void put2(K key, V value) {
 		if (value != null) {
 			int i = rank(key);
 			list.add(i, new STEntry<K, V>(key, value));
@@ -59,7 +46,11 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 
 	@Override
 	public Iterable<K> keys() {
-		return null;
+		List<K> aux = new ArrayList<>();
+		for (int i = 0; i < list.size(); i++) {
+			aux.add((K) select(i));
+		}
+		return aux;
 	}
 
 	@Override
@@ -113,6 +104,8 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 	public K select(int i) {
 		return list.get(i).getKey();
 	}
+	
+	
 
 	@Override
 	public void deleteMin() {
@@ -136,14 +129,11 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 
 	public static void main(String[] args) {
 		BinarySearchST<String, Integer> b = new BinarySearchST<>();
-		b.put2("Bruno", 1);
-		b.put2("João", 2);
-		b.put2("Maria", 3);
-
-		for (int i = 0; i < b.size(); i++) {
-			System.out.println(b.select(i));
-		}
-
+		b.put("Bruno", 1);
+		b.put("João", 2);
+		b.put("Maria", 3);
+		
+	
 	}
 
 }

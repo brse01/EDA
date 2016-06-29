@@ -22,7 +22,7 @@ public class Versao1 {
 	public BinarySearchST<String, Integer> docId(List<String> names) {
 		BinarySearchST<String, Integer> docAux = new BinarySearchST<>();
 		for (int i = 0; i < names.size(); i++) {
-			docAux.put(names.get(i), i + 1);
+			docAux.put(names.get(i), i);
 		}
 		return docAux;
 	}
@@ -75,8 +75,8 @@ public class Versao1 {
 		BinarySearchTree<Integer, Integer> aux;
 		Integer count = 1;
 		for (String cod : codId.keys()) {
-			String file = cod;
-			BufferedReader reader = open(file);
+
+			BufferedReader reader = open(cod);
 			while (reader.ready()) {
 				String line = normalizeStr(reader.readLine());
 				for (String word : line.split("\\s+")) {
@@ -94,7 +94,6 @@ public class Versao1 {
 						}
 					}
 				}
-
 			}
 			reader.close();
 		}
@@ -118,15 +117,19 @@ public class Versao1 {
 		return auxFile;
 	}
 
+	public long time() {
+		return System.currentTimeMillis();
+	}
+
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
 		Versao1 versao1 = new Versao1();
 		List<String> listFile = new ArrayList<>();
 		listFile = versao1.captureEnter("Entrada.txt");
 		BinarySearchST<String, Integer> codId = versao1.docId(listFile);
+		long tempoInicial = versao1.time();
 		SeparateChainingHashST<String, BinarySearchTree<Integer, Integer>> map = versao1.createInvertedIndex(codId);
-		for (String word : map.keys()) {
-			System.out.println(word + " = " + map.get(word));
-		}
-
+		long tempoFinal = versao1.time();
+		System.out.printf("%.3f ms%n", (tempoFinal - tempoInicial) / 1000d);
 	}
 }
