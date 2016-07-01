@@ -47,7 +47,6 @@ public class LinearProbingHashST<K, V> implements ST<K, V> {
 	@Override
 	public void delete(K key) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -79,6 +78,7 @@ public class LinearProbingHashST<K, V> implements ST<K, V> {
 	public Iterable<K> keys() {
 		List<K> aux = new ArrayList<>();
 		for (int i = 0; i < keys.length; i++) {
+			if(keys[i]!= null)
 			aux.add(keys[i]);
 		}
 		return aux;

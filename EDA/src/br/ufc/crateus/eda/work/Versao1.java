@@ -1,28 +1,25 @@
-package br.ufc.crateus.eda.utils;
+package br.ufc.crateus.eda.work;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.ufc.crateus.eda.st.hashing.SeparateChainingHashST;
-import br.ufc.crateus.eda.st.ordered.BinarySearchST;
 import br.ufc.crateus.eda.st.ordered.BinarySearchTree;
 
 public class Versao1 {
 
-	public int doc_id(String key, int m) {
-		return (key.hashCode() & 0x7fffffff) % m;
-	}
-
-	public BinarySearchST<String, Integer> docId(List<String> names) {
-		BinarySearchST<String, Integer> docAux = new BinarySearchST<>();
-		for (int i = 0; i < names.size(); i++) {
-			docAux.put(names.get(i), i);
+	public SeparateChainingHashST<String, Integer> docId(List<String> names) {
+		int m = names.size();
+		SeparateChainingHashST<String, Integer> docAux = new SeparateChainingHashST<>(m);
+		for (int i = 0; i < m; i++) {
+			docAux.put(names.get(i), i + 1);
 		}
 		return docAux;
 	}
@@ -69,18 +66,17 @@ public class Versao1 {
 	}
 
 	public SeparateChainingHashST<String, BinarySearchTree<Integer, Integer>> createInvertedIndex(
-			BinarySearchST<String, Integer> codId) throws IOException {
+			SeparateChainingHashST<String, Integer> codId) throws IOException {
 		SeparateChainingHashST<String, BinarySearchTree<Integer, Integer>> separateChainingHashST = new SeparateChainingHashST<>(
 				97);
 		BinarySearchTree<Integer, Integer> aux;
 		Integer count = 1;
 		for (String cod : codId.keys()) {
-
 			BufferedReader reader = open(cod);
 			while (reader.ready()) {
 				String line = normalizeStr(reader.readLine());
 				for (String word : line.split("\\s+")) {
-					if (word.length() > 3) {
+					if (word.length() > 3 && isDigit(word)) {
 						aux = separateChainingHashST.get(word);
 						if (aux != null) {
 							count = aux.get(codId.get(cod));
@@ -98,6 +94,17 @@ public class Versao1 {
 			reader.close();
 		}
 		return separateChainingHashST;
+	}
+
+	public String removeCs(String r) {
+		if (r.length() > 20) {
+			char[] charArray = new char[20];
+			for (int i = 0; i < 20; i++) {
+				charArray[i] = r.charAt(i);
+			}
+			r = String.copyValueOf(charArray);
+		}
+		return r;
 	}
 
 	public List<String> captureEnter(String str) throws IOException {
@@ -122,14 +129,37 @@ public class Versao1 {
 	}
 
 	@SuppressWarnings("unused")
+	private Double calculateFormatLog(int value) {
+		DecimalFormat df = new DecimalFormat("0.00");
+		String dx = df.format(Math.log(value));
+		dx = dx.replace(",", ".");
+		return Double.parseDouble(dx.trim());
+	}
+
+	@SuppressWarnings("unused")
+	public boolean isDigit(String st) {
+		try {
+			int b = Integer.parseInt(st);
+			return false;
+		} catch (NumberFormatException nfe) {
+			return true;
+		}
+	}
+
 	public static void main(String[] args) throws IOException {
-		Versao1 versao1 = new Versao1();
+		Versao1 ver1 = new Versao1();
+
+		List<Integer> numberWords = new ArrayList<>();
 		List<String> listFile = new ArrayList<>();
-		listFile = versao1.captureEnter("Entrada.txt");
-		BinarySearchST<String, Integer> codId = versao1.docId(listFile);
-		long tempoInicial = versao1.time();
-		SeparateChainingHashST<String, BinarySearchTree<Integer, Integer>> map = versao1.createInvertedIndex(codId);
-		long tempoFinal = versao1.time();
-		System.out.printf("%.3f ms%n", (tempoFinal - tempoInicial) / 1000d);
+		listFile = ver1.captureEnter("Entrada.txt");
+		SeparateChainingHashST<String, Integer> codId = ver1.docId(listFile);
+
+		long tempoInicial = ver1.time();
+		SeparateChainingHashST<String, BinarySearchTree<Integer, Integer>> map = ver1.createInvertedIndex(codId);
+		long tempoFinal = ver1.time();
+		for (String string : map.keys()) {
+			System.out.println(string);
+		}
+		System.out.println(map.size());
 	}
 }
