@@ -31,12 +31,12 @@ public class LinearProbingHashST<K, V> implements ST<K, V> {
 		return null;
 	}
 
-	@Override
 	public void put(K key, V value) {
 		if ((double) length / m > 0.5)
 			resize();
 		int i;
-		for (i = hash(key); keys[i] != null && !key.equals(keys[i]); i = (i + 1) % m);
+		for (i = hash(key); keys[i] != null && !key.equals(keys[i]); i = (i + 1) % m)
+			;
 		if (keys[i] == null) {
 			keys[i] = key;
 			length++;
@@ -46,7 +46,6 @@ public class LinearProbingHashST<K, V> implements ST<K, V> {
 
 	@Override
 	public void delete(K key) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -78,8 +77,8 @@ public class LinearProbingHashST<K, V> implements ST<K, V> {
 	public Iterable<K> keys() {
 		List<K> aux = new ArrayList<>();
 		for (int i = 0; i < keys.length; i++) {
-			if(keys[i]!= null)
-			aux.add(keys[i]);
+			if (keys[i] != null)
+				aux.add(keys[i]);
 		}
 		return aux;
 	}

@@ -117,11 +117,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedST<K
 		return keys;
 	}
 
-	public Iterable<V> values() {
-		Queue<K> values = new LinkedList<>();
-		inorder(root, values);
-		return (Iterable<V>) values;
-	}
+		
 
 	@Override
 	public K min() {
@@ -203,8 +199,20 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedST<K
 
 	@Override
 	public K select(int i) {
+		Node r = select(root, i);
+		return (r != null) ? r.key : null;
+	}
 
-		return null;
+	private Node select(Node r, int k) {
+		if (r == null)
+			return null;
+		int t = size(r.left);
+		if (t > k)
+			return select(r.left, k);
+		else if (t < k)
+			return select(r.right, k - t - 1);
+		else
+			return r;
 	}
 
 	@Override
@@ -250,14 +258,6 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedST<K
 			inorder(r.left, keys);
 			keys.add(r.key);
 			inorder(r.right, keys);
-		}
-	}
-
-	void inorder2(Node r, Queue<V> values) {
-		if (r != null) {
-			inorder2(r.left, values);
-			values.add(r.value);
-			inorder2(r.right, values);
 		}
 	}
 

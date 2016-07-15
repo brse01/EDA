@@ -11,17 +11,16 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
-import br.ufc.crateus.eda.st.hashing.LinearProbingHashST;
+import br.ufc.crateus.eda.st.hashing.SeparateTreeHash;
 import br.ufc.crateus.eda.st.ordered.BinarySearchTree;
 import br.ufc.crateus.eda.string.StringST;
 
-public class Versao2 {
+public class Versao3 {
 
-	public LinearProbingHashST<String, Integer> docId(List<String> names) {
+	public SeparateTreeHash<String, Integer> docId(List<String> names) {
 		int m = names.size();
-		LinearProbingHashST<String, Integer> docAux = new LinearProbingHashST<>(m);
+		SeparateTreeHash<String, Integer> docAux = new SeparateTreeHash<>(m);
 		for (int i = 0; i < m; i++) {
 			docAux.put(names.get(i), i + 1);
 		}
@@ -36,8 +35,10 @@ public class Versao2 {
 		semAcentos = semAcentos.replace("”", "");
 		semAcentos = semAcentos.replace("�", "");
 		semAcentos = semAcentos.replace("∞", "");
-		semAcentos = semAcentos.replace("’", "");
+		semAcentos = semAcentos.replace("•", "");
+		semAcentos = semAcentos.replace("'", "");
 		semAcentos = semAcentos.replace("°", "");
+
 		return semAcentos.toLowerCase();
 	}
 
@@ -47,10 +48,11 @@ public class Versao2 {
 		try {
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
 		} catch (FileNotFoundException e) {
-			System.err.println("Erro ao tentar abrir o arquivo > " + e.getMessage());
+			System.out.println("Erro ao tentar abrir o arquivo > " + e.getMessage());
 		}
 		return reader;
 	}
+
 
 	public void close(BufferedReader reader) {
 		try {
@@ -88,6 +90,7 @@ public class Versao2 {
 		return auxFile;
 	}
 
+	
 	public Double Format(Double value) {
 		DecimalFormat df = new DecimalFormat("0.00");
 		String dx = df.format(value);
@@ -116,17 +119,16 @@ public class Versao2 {
 		for (String word : line.split("\\s+")) {
 			if (word.length() > 3) {
 				word = normalizeStr(word);
-				aux.add(word.trim());
+				aux.add(word);
 			}
 		}
 		return aux;
 	}
 
-	public LinearProbingHashST<String, BinarySearchTree<Integer, Integer>> createInvertedIndex2(
-			LinearProbingHashST<String, Integer> codId, List<Integer> numberWords, StringST<String> suggestions,
+	public SeparateTreeHash<String, BinarySearchTree<Integer, Integer>> createInvertedIndex2(
+			SeparateTreeHash<String, Integer> codId, List<Integer> numberWords, StringST<String> suggestions,
 			String path) throws IOException {
-		LinearProbingHashST<String, BinarySearchTree<Integer, Integer>> linearProbingHashST = new LinearProbingHashST<>(
-				97);
+		SeparateTreeHash<String, BinarySearchTree<Integer, Integer>> separateTreeHash = new SeparateTreeHash<>(97);
 		Integer countNumberWords = 0;
 		BinarySearchTree<Integer, Integer> aux;
 		for (String cod : codId.keys()) {
@@ -136,18 +138,18 @@ public class Versao2 {
 				for (String word : line.split("\\s+")) {
 					word = normalizeStr(word).trim();
 					if (word.length() > 3 && isDigit(word)) {
-						if (linearProbingHashST.contains(word)) {
-							aux = linearProbingHashST.get(word);
+						if (separateTreeHash.contains(word)) {
+							aux = separateTreeHash.get(word);
 							Integer count = aux.get(codId.get(cod));
 							count = (count != null) ? count + 1 : 1;
 							aux.put(codId.get(cod), count);
-							linearProbingHashST.put(word, aux);
+							separateTreeHash.put(word, aux);
 						} else {
 							suggestions.put(word, word);
 							countNumberWords++;
 							aux = new BinarySearchTree<>();
 							aux.put(codId.get(cod), 1);
-							linearProbingHashST.put(word, aux);
+							separateTreeHash.put(word, aux);
 						}
 					}
 				}
@@ -156,7 +158,7 @@ public class Versao2 {
 			countNumberWords = 0;
 			reader.close();
 		}
-		return linearProbingHashST;
+		return separateTreeHash;
 	}
 
 	public BinarySearchTree<Double, String> sort(BinarySearchTree<String, Double> accumulator,
@@ -170,9 +172,8 @@ public class Versao2 {
 		return aux;
 	}
 
-	// calculate
-	public BinarySearchTree<Double, String> calculate(List<String> termos, LinearProbingHashST<String, Integer> codId,
-			List<Integer> numberWords, LinearProbingHashST<String, BinarySearchTree<Integer, Integer>> map,
+	public BinarySearchTree<Double, String> calculate(List<String> termos, SeparateTreeHash<String, Integer> codId,
+			List<Integer> numberWords, SeparateTreeHash<String, BinarySearchTree<Integer, Integer>> map,
 			List<String> listFile) {
 		BinarySearchTree<Integer, Integer> aux;
 		String word;

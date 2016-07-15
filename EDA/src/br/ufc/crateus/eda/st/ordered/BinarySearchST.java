@@ -132,8 +132,7 @@ public class BinarySearchST<K extends Comparable<K>, V> implements OrderedST<K, 
 		b.put("Bruno", 1);
 		b.put("João", 2);
 		b.put("Maria", 3);
-		
-	
+			
 	}
 
 }

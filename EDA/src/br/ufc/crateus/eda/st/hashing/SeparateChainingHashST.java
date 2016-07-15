@@ -45,6 +45,9 @@ public class SeparateChainingHashST<K, V> implements ST<K, V> {
 
 	@Override
 	public void put(K key, V value) {
+		if (count >= 4*m)  {
+			resize(2*m);
+		}
 		int i = hash(key);
 		for (Node l = table[i]; l != null; l = l.next) {
 			if (l.key.equals(key)) {
@@ -87,24 +90,16 @@ public class SeparateChainingHashST<K, V> implements ST<K, V> {
 		return list;
 	}
 
-	@SuppressWarnings("unchecked")
-	public Iterable<V> values() {
-		List<V> list = new ArrayList<>(count);
-		for (int i = 0; i < m; i++)
-			for (Node l = table[i]; l != null; l = l.next)
-				list.add((V) l.value);
-		return list;
-	}
-
-	@SuppressWarnings({ "unused", "unchecked" })
-	private void resize() {
-		System.out.println("CHAMOU");
-		SeparateChainingHashST<K, V> hash = new SeparateChainingHashST<>(2 * m);
-		for (int i = 0; i < m; i++)
+	@SuppressWarnings({ "unchecked" })
+	private void resize(int m) {
+		SeparateChainingHashST<K, V> hash = new SeparateChainingHashST<>(m);
+		for (int i = 0; i < this.m; i++) {
 			for (Node l = table[i]; l != null; l = l.next) {
 				hash.put((K) l.key, (V) l.value);
 			}
+		}
+		this.m = hash.m;
+		this.count = hash.count;
 		table = hash.table;
 	}
-
 }

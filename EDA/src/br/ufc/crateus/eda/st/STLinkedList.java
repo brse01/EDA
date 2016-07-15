@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
+@SuppressWarnings("hiding")
 public class STLinkedList<K, Object> implements ST<K, Object> {
 	
 	private List<Entry<K, Object>> list = new LinkedList<>();
